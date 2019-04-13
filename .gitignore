@@ -13,6 +13,7 @@ target/
 *.ipr
 *.iml
 *.iws
+out/
 
 #temp file
 *.log
