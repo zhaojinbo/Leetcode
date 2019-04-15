@@ -56,8 +56,9 @@ public class MainClass {
         while ((line = in.readLine()) != null) {
             ListNode head = stringToListNode(line);
 
-            new Solution_143().reorderList(head);
-            String out = listNodeToString(head);
+            ListNode ret = new Solution_147().insertionSortList(head);
+
+            String out = listNodeToString(ret);
 
             System.out.print(out);
         }
