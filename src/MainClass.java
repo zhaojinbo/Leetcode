@@ -23,42 +23,15 @@ public class MainClass {
         return output;
     }
 
-    public static ListNode stringToListNode(String input) {
-        // Generate array from the input
-        int[] nodeValues = stringToIntegerArray(input);
-
-        // Now convert that list into linked list
-        ListNode dummyRoot = new ListNode(0);
-        ListNode ptr = dummyRoot;
-        for(int item : nodeValues) {
-            ptr.next = new ListNode(item);
-            ptr = ptr.next;
-        }
-        return dummyRoot.next;
-    }
-
-    public static String listNodeToString(ListNode node) {
-        if (node == null) {
-            return "[]";
-        }
-
-        String result = "";
-        while (node != null) {
-            result += Integer.toString(node.val) + ", ";
-            node = node.next;
-        }
-        return "[" + result.substring(0, result.length() - 2) + "]";
-    }
-
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
         while ((line = in.readLine()) != null) {
-            ListNode head = stringToListNode(line);
+            int[] nums = stringToIntegerArray(line);
 
-            ListNode ret = new Solution_147().insertionSortList(head);
+            int ret = new Solution_213().rob(nums);
 
-            String out = listNodeToString(ret);
+            String out = String.valueOf(ret);
 
             System.out.print(out);
         }

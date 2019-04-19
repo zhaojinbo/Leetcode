@@ -1,20 +1,19 @@
 public class Solution_198 {
-    public int rob(int[] nums) {
-        if (nums.length ==0){
+    public static int rob(int[] nums) {
+        if (nums.length == 0) {
             return 0;
         }
-        if (nums.length == 1) {
-            return nums[0];
+        //用来存放到某个位置为止能够偷的最大和，下标表示真实的第几个元素;例如maxSum[i]表示到nums的第i个元素为止，能够偷窃的最大数
+        int[] maxSum = new int[nums.length + 1];
+        maxSum[0] = 0;
+        maxSum[1] = nums[0];
+        for (int i = 2; i < maxSum.length; i++) {
+            maxSum[i] = Math.max(maxSum[i - 2] + nums[i - 1], maxSum[i - 1]);
         }
-        int[] maxSum = new int[nums.length];//用来存放每个坐标位置之前能够偷的最大和
-        maxSum[0] = nums[0];
-        maxSum[1] = nums[1];
-        if (nums.length>2){
-            maxSum[2] = nums[2] + maxSum[0];
-        }
-        for (int i = 3; i < nums.length; i++) {
-            maxSum[i] = Math.max(maxSum[i - 2], maxSum[i - 3]) + nums[i];
-        }
-        return Math.max(maxSum[maxSum.length - 1], maxSum[maxSum.length - 2]);
+        return maxSum[nums.length];
+    }
+
+    public static void main(String[] args) {
+        System.out.println(rob(new int[]{1,2,3,1}));
     }
 }
