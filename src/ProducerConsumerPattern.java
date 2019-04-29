@@ -5,8 +5,8 @@ import java.util.logging.Logger;
 
 public class ProducerConsumerPattern {
 
-    public static void main(String args[]) {
-        BlockingQueue bufQueue = new LinkedBlockingQueue();
+    public static void main(String[] args) {
+        BlockingQueue<String> bufQueue = new LinkedBlockingQueue<>();
         Thread prodThread = new Thread(new Producer(bufQueue));
         Thread consThread = new Thread(new Consumer(bufQueue));
         prodThread.start();
