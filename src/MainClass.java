@@ -7,101 +7,60 @@ import java.util.Queue;
 
 
 public class MainClass {
-    public static TreeNode stringToTreeNode(String input) {
+    public static int[] stringToIntegerArray(String input) {
         input = input.trim();
         input = input.substring(1, input.length() - 1);
         if (input.length() == 0) {
-            return null;
+            return new int[0];
         }
 
         String[] parts = input.split(",");
-        String item = parts[0];
-        TreeNode root = new TreeNode(Integer.parseInt(item));
-        Queue<TreeNode> nodeQueue = new LinkedList<>();
-        nodeQueue.add(root);
-
-        int index = 1;
-        while (!nodeQueue.isEmpty()) {
-            TreeNode node = nodeQueue.remove();
-
-            if (index == parts.length) {
-                break;
-            }
-
-            item = parts[index++];
-            item = item.trim();
-            if (!item.equals("null")) {
-                int leftNumber = Integer.parseInt(item);
-                node.left = new TreeNode(leftNumber);
-                nodeQueue.add(node.left);
-            }
-
-            if (index == parts.length) {
-                break;
-            }
-
-            item = parts[index++];
-            item = item.trim();
-            if (!item.equals("null")) {
-                int rightNumber = Integer.parseInt(item);
-                node.right = new TreeNode(rightNumber);
-                nodeQueue.add(node.right);
-            }
+        int[] output = new int[parts.length];
+        for(int index = 0; index < parts.length; index++) {
+            String part = parts[index].trim();
+            output[index] = Integer.parseInt(part);
         }
-        return root;
+        return output;
     }
 
-    public static String treeNodeToString(TreeNode root) {
-        if (root == null) {
+    public static ListNode stringToListNode(String input) {
+        // Generate array from the input
+        int[] nodeValues = stringToIntegerArray(input);
+
+        // Now convert that list into linked list
+        ListNode dummyRoot = new ListNode(0);
+        ListNode ptr = dummyRoot;
+        for(int item : nodeValues) {
+            ptr.next = new ListNode(item);
+            ptr = ptr.next;
+        }
+        return dummyRoot.next;
+    }
+
+    public static String listNodeToString(ListNode node) {
+        if (node == null) {
             return "[]";
         }
 
-        String output = "";
-        Queue<TreeNode> nodeQueue = new LinkedList<>();
-        nodeQueue.add(root);
-        while (!nodeQueue.isEmpty()) {
-            TreeNode node = nodeQueue.remove();
-
-            if (node == null) {
-                output += "null, ";
-                continue;
-            }
-
-            output += String.valueOf(node.val) + ", ";
-            nodeQueue.add(node.left);
-            nodeQueue.add(node.right);
+        String result = "";
+        while (node != null) {
+            result += Integer.toString(node.val) + ", ";
+            node = node.next;
         }
-        return "[" + output.substring(0, output.length() - 2) + "]";
+        return "[" + result.substring(0, result.length() - 2) + "]";
     }
 
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
         while ((line = in.readLine()) != null) {
-            TreeNode root = stringToTreeNode(line);
-            line = in.readLine();
-//            TreeNode p = stringToTreeNode(line);
-            TreeNode p = findNode(root,Integer.parseInt(line));
-            line = in.readLine();
-//            TreeNode q = stringToTreeNode(line);
-            TreeNode q = findNode(root,Integer.parseInt(line));
+            ListNode head = stringToListNode(line);
 
-            TreeNode ret = new Solution_236().lowestCommonAncestor(root, p, q);
+            ListNode ret = new Solution_328().oddEvenList(head);
 
-            String out = treeNodeToString(ret);
+            String out = listNodeToString(ret);
 
             System.out.print(out);
         }
-    }
-
-    private static TreeNode findNode(TreeNode root, int val) {
-        if (root == null || root.val == val) {
-            return root;
-        }
-        TreeNode left = findNode(root.left, val);
-        if (left == null) {
-            return findNode(root.right, val);
-        }
-        return left;
     }
 }
