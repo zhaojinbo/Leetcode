@@ -5,44 +5,57 @@ public class Solution_232 {
     private LinkedList<Integer> linkedList1;
     private LinkedList<Integer> linkedList2;
 
-    /** Initialize your data structure here. */
+    /**
+     * Initialize your data structure here.
+     */
     public Solution_232() {
         linkedList1 = new LinkedList<>();
         linkedList2 = new LinkedList<>();
     }
 
-    /** Push element x to the back of queue. */
+    /**
+     * Push element x to the back of queue.
+     */
     public void push(int x) {
-        while (!linkedList1.isEmpty()){
-            Integer integer = linkedList1.pop();
-            linkedList2.push(integer);
-        }
-        linkedList2.push(x);
+        // 每次放元素都往第一个栈里面放
+        linkedList1.push(x);
     }
 
-    /** Removes the element from in front of queue and returns that element. */
+    /**
+     * Removes the element from in front of queue and returns that element.
+     */
     public int pop() {
-        while (!linkedList2.isEmpty()){
-            Integer integer = linkedList2.pop();
-            linkedList1.push(integer);
+        // 每次取元素都从第二个栈里取，直到取空时，将第一个栈里面放的元素移动过来
+        if (linkedList2.isEmpty()) {
+            while (!linkedList1.isEmpty()) {
+                Integer pop = linkedList1.pop();
+                linkedList2.push(pop);
+            }
         }
-        return linkedList1.pop();
+        return linkedList2.pop();
     }
 
-    /** Get the front element. */
+    /**
+     * Get the front element.
+     */
     public int peek() {
-        while (!linkedList2.isEmpty()){
-            Integer integer = linkedList2.pop();
-            linkedList1.push(integer);
+        if (linkedList2.isEmpty()) {
+            while (!linkedList1.isEmpty()) {
+                Integer pop = linkedList1.pop();
+                linkedList2.push(pop);
+            }
         }
-        Integer f = linkedList1.peek();
-        if (f == null)
+        Integer peek = linkedList2.peek();
+        if (peek == null) {
             throw new NoSuchElementException();
-        return f;
+        }
+        return peek;
     }
 
-    /** Returns whether the queue is empty. */
+    /**
+     * Returns whether the queue is empty.
+     */
     public boolean empty() {
-        return linkedList1.isEmpty()&&linkedList2.isEmpty();
+        return linkedList1.isEmpty() && linkedList2.isEmpty();
     }
 }
