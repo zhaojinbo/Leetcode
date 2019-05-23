@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public class Solution_338 {
     /**
      * 动态规划，3ms
