@@ -5,42 +5,36 @@ public class Solution_22 {
     public List<String> generateParenthesis(int n) {
         List<String> list = new ArrayList<>();
 
-        // Using char[] and filling it by ')'
-        char[] chars = new char[n * 2];
-        for (int i = 0; i < chars.length; i++) {
-            chars[i] = ')';
-        }
+        generate("", 0, 0, n, list);
 
-        generate(list, chars, 0, 0, n);
         return list;
     }
 
-    private void generate(List<String> list, char[] chars, int index, int opening, int depth) {
-        // when chars is "((((", index must be 4 and opening must be 4
-        // the largest index for new parenthesis is 8 when chars reaches "((((" + "))))"
-
-        // when chars is "(()(", index must be 4 and opening must be 2
-        // the largest index for new parenthesis is 6 when chars reaches "(()(" + "))"
-
-        // reduce maximum recursion depth to N with this opening count
-        for (int end = index + opening; index <= end; index++) {
-            // new open parenthesis
-            chars[index] = '(';
-
-            if (depth == 1) {
-                // maximum recursion depth is N - 1
-
-                // this op will cost amost all of runing time when increasing N
-                // replacing it by a counter will reveal real optimizing effect.
-                list.add(new String(chars));
-            } else {
-                // chars[index] must be '('
-                generate(list, chars, index + 1, opening + 1, depth - 1);
+    /**
+     * 回溯算法，通过深度优先遍历，当碰到符合条件的解或者不符合条件的解，就return，重新进入别的路径
+     * @param s 当前深度优先遍历的位置，字符串s的值
+     * @param left s中左括号的个数
+     * @param right s中右括号的个数
+     * @param n 左括号最多应该不超过n个
+     * @param list 用来存储结果的list
+     */
+    private void generate(String s, int left, int right, int n, List<String> list) {
+        if (left + right == 2 * n) {
+            list.add(s);
+            return;
+        }
+        if (left < n) {
+            generate(s + "(", left + 1, right, n, list);
+        }else {
+            StringBuilder sBuilder = new StringBuilder(s);
+            for (int i = 0; i < n - right; i++) {
+                sBuilder.append(")");
             }
-
-            //  close a previous opening '('
-            chars[index] = ')';
-            opening--;
+            list.add(sBuilder.toString());
+            return;
+        }
+        if (right < left) {
+            generate(s + ")", left, right + 1, n, list);
         }
     }
 }
