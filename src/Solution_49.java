@@ -1,59 +1,60 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class Solution_49 {
-    public List<List<String>> groupAnagrams(String[] strs) {
+    /**
+     * 时间复杂度：12ms，98.96%
+     * 空间复杂度：41.6 MB，98.42%
+     */
+    public List<List<String>> groupAnagramsOne(String[] strs) {
         List<List<String>> res = new ArrayList<>();
-        int length = strs.length;
-        boolean[] visited = new boolean[length];
-
-        //二维数组用来保存每一个字符串的内容
-        int[][] ints = new int[length][26];
-        for (int i = 0; i < length; i++) {
-            char[] chars = strs[i].toCharArray();
-            for (char aChar : chars) {
-                ints[i][aChar - 'a']++;
-            }
-        }
-        for (int i = 0; i < length; i++) {
-            if (!visited[i]) {
-                ArrayList<String> templist = new ArrayList<>();
-                templist.add(strs[i]);
-                for (int j = i + 1; j < length; j++) {
-                    if (!visited[j] && isAnagram(strs, ints, i, j)) {
-                        templist.add(strs[j]);
-                        visited[j] = true;
-                    }
-                }
-                res.add(templist);
+        //字母异位词都有一个共同的本质，我们以他们共同的本质为key以一个存放他们的容器list为value构建hashMap
+        HashMap<String, ArrayList<String>> hashMap = new HashMap<>();
+        for (String str : strs) {
+            char[] chars = str.toCharArray();
+            //在本方法中，我们以排序后的字符串作为字母异位词的“本质”
+            Arrays.sort(chars);
+            String strAfterSort = new String(chars);
+            if (hashMap.get(strAfterSort) == null) {
+                ArrayList<String> list = new ArrayList<>();
+                list.add(str);
+                hashMap.put(strAfterSort, list);
+                res.add(list);
+            } else {
+                hashMap.get(strAfterSort).add(str);
             }
         }
         return res;
     }
 
-    private boolean isAnagram(String[] strs, int[][] ints, int i, int j) {
-        int length1 = strs[i].length();
-        int length2 = strs[j].length();
-        if (length1 != length2) {
-            return false;
-        }
-        if (length1 < 26) {
-            char[] chars = strs[i].toCharArray();
-            for (int k = 0; k < strs[i].length(); k++) {
-                int index = chars[k] - 'a';
-                if (ints[i][index] != ints[j][index]) {
-                    return false;
-                }
+    /**
+     * 时间复杂度：9ms，99.76%
+     * 空间复杂度：41.8 MB，98.19%
+     */
+    public List<List<String>> groupAnagrams(String[] strs) {
+        List<List<String>> res = new ArrayList<>();
+        //字母异位词都有一个共同的本质，我们以他们共同的本质为key以一个存放他们的容器list为value构建hashMap
+        HashMap<Integer, ArrayList<String>> hashMap = new HashMap<>();
+        int[] prime = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 41, 43, 47,
+                53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103};
+        for (String str : strs) {
+            char[] chars = str.toCharArray();
+            //在本方法中，我们以字符串中每个字符的代表的质数的乘积作为字母异位词的“本质”
+            int key = 1;
+            for (char ch : chars) {
+                key *= prime[ch - 'a'];
             }
-            return true;
-        } else {
-            for (int k = 0; k < 26; k++) {
-                if (ints[i][k] != ints[j][k]) {
-                    return false;
-                }
+            if (hashMap.get(key) == null) {
+                ArrayList<String> list = new ArrayList<>();
+                list.add(str);
+                hashMap.put(key, list);
+                res.add(list);
+            } else {
+                hashMap.get(key).add(str);
             }
-            return true;
         }
+        return res;
     }
-
 }
