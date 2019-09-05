@@ -51,8 +51,47 @@ public class Solution_78 {
         return res;
     }
 
+    /**
+     * 第二种方法，回溯算法
+     * 2ms，90.28%
+     */
+    public List<List<Integer>> subsetsTwo(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        generate(nums, 0, res);
+        res.add(new ArrayList<>());
+        return res;
+    }
+
+    /**
+     * @param nums 数组
+     * @param index 生成从index到最后一位的子集
+     * @param res 最终结果集
+     */
+    private void generate(int[] nums, int index, List<List<Integer>> res) {
+        if (index == nums.length-1) {
+            List<Integer> list = new ArrayList<>();
+            list.add(nums[index]);
+            res.add(list);
+            return;
+        }
+        /*
+         * 生成从index+1到最后一位的子集
+         * 然后从index到最后一位的子集，就是把当前位置的数字加到每一个集合中
+         * 最后再加上单独这个数子组成的集合
+         */
+        generate(nums, index + 1,res);
+        for (List<Integer> list : new ArrayList<>(res)) {
+            ArrayList<Integer> integers = new ArrayList<>(list);
+            integers.add(nums[index]);
+            res.add(integers);
+        }
+        ArrayList<Integer> integers = new ArrayList<>();
+        integers.add(nums[index]);
+        res.add(integers);
+    }
+
 /*    public static void main(String[] args) {
-        List<List<Integer>> res = new Solution_78().subsets(new int[]{1, 2, 3, 4});
+        List<List<Integer>> res = new Solution_78().subsetsTwo(new int[]{1, 2, 3});
         System.out.println(res);
     }*/
 }
