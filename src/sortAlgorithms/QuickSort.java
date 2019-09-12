@@ -5,8 +5,6 @@ class QuickSort {
      * 快速排序，采用递归调用方式
      * 首先对整个数组进行分割，然后对左侧和右侧子序列进行分别排序
      * 递归的终止条件是，子序列只有一个元素或者零个元素
-     *
-     * @param a
      */
     static void quickSort(int[] a) {
         int n = a.length;
@@ -14,41 +12,36 @@ class QuickSort {
 
     }
 
-    private static void sort(int[] a, int low, int high) {
-        if (low >= high) {
+    private static void sort(int[] a, int from, int to) {
+        if (from >= to) {
             return;
         }
-        int k = partition(a, low, high);
-        sort(a, low, k - 1);
-        sort(a, k + 1, high);
+        int k = partition(a, from, to);
+        sort(a, from, k - 1);
+        sort(a, k + 1, to);
 
     }
 
     /**
      * 切分函数，主要用来将子序列的第一个元素的位置确定下来
      * 位置确定后的序列，左侧元素都不大于它，右侧元素都不小于它
-     *
-     * @param a
-     * @param low
-     * @param high
-     * @return
      */
-    private static int partition(int[] a, int low, int high) {
-        int lo = low + 1;
-        int hi = high;
+    private static int partition(int[] a, int from, int to) {
+        int i = from;
+        int j = to + 1;
         while (true) {
-            while (a[lo] <= a[low] && lo <= hi) {
-                lo++;
+            while (a[++i] < a[from]) {
+                if (i == to) break;
             }
-            while (a[hi] >= a[low] && lo <= hi) {
-                hi--;
+            while (a[--j] > a[from]) {
+                if (j == from) break;
             }
-            if (lo >= hi) {
+            if (i >= j) {
                 break;
             }
-            SortUtils.exchange(a,lo,hi);
+            SortUtils.exchange(a, i, j);
         }
-        SortUtils.exchange(a,hi,low);
-        return hi;
+        SortUtils.exchange(a, from, j);
+        return j;
     }
 }

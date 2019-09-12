@@ -6,8 +6,6 @@ class MergeSort {
 
     /**
      * 归并排序，自顶向下的递归排序方法
-     *
-     * @param a
      */
     static void sortFromTop(int[] a) {
         int n = a.length;
@@ -18,10 +16,6 @@ class MergeSort {
     /**
      * 递归调用，进行排序
      * 先将数组分为两半，分别对前半段和后半段排序，之后进行合并
-     *
-     * @param a
-     * @param low
-     * @param high
      */
     private static void sort(int[] a, int low, int high) {
         if (low >= high)
@@ -35,8 +29,6 @@ class MergeSort {
     /**
      * 归并排序，自底向上的排序方法
      * 先将小的子序列合并，再将大的子序列合并
-     *
-     * @param a
      */
     static void sortFromBottom(int[] a) {
         int n = a.length;
@@ -51,18 +43,11 @@ class MergeSort {
     /**
      * 合并算法，将传过来的数组中low到high范围内的两个有序子序列进行合并
      * 两个有序子序列的范围分别是[low,mid] [mid+1,high]
-     *
-     * @param a
-     * @param low
-     * @param mid
-     * @param high
      */
     private static void merge(int[] a, int low, int mid, int high) {
         int first = low;
         int second = mid + 1;
-        for (int i = low; i <= high; i++) {
-            aid[i] = a[i];
-        }
+        System.arraycopy(a, low, aid, low, high + 1 - low);
         for (int i = low; i <= high; i++) {
             if (first > mid) {
                 a[i] = aid[second++];
