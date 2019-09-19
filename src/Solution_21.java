@@ -13,7 +13,7 @@ public class Solution_21 {
         if (l2 == null) {
             return l1;
         }
-        ListNode newNode = null;
+        ListNode newNode;
         if (l1.val < l2.val) {
             newNode = l1;
             l1 = l1.next;
@@ -35,7 +35,7 @@ public class Solution_21 {
         //最后再将剩余的节点连在最后
         if (l1 == null) {
             n.next = l2;
-        } else if (l2 == null) {
+        } else {
             n.next = l1;
         }
         return newNode;
