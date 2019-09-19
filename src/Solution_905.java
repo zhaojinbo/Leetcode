@@ -1,10 +1,14 @@
 import java.util.Arrays;
 
+/**
+ * 双指针法
+ */
 public class Solution_905 {
     public int[] sortArrayByParity(int[] A) {
         if (A.length < 2) {
             return A;
         }
+        //定义两个指针
         int i = 0;
         int j = A.length - 1;
         while (i < j) {
@@ -24,6 +28,7 @@ public class Solution_905 {
         return A;
     }
 
+    //判断是否为偶数
     private boolean isEven(int num) {
         return num % 2 == 0;
     }
