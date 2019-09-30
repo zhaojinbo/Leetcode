@@ -48,10 +48,6 @@ public class Solution_20 {
                 }
             }
         }
-        if (num_of_left != chars.length / 2) {
-            return false;
-        } else {
-            return true;
-        }
+        return num_of_left == chars.length / 2;
     }
 }
